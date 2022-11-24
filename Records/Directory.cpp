@@ -19,7 +19,8 @@ Directory::Directory(const Directory& mdd)
 Directory* Directory::clone(void) const
 {
 	// À compléter pour construire un nouvel objet Directory en appelant le constructeur de copie
-	return nullptr; // À remplacer
+	Directory* clone = new Directory(m_name);
+	return clone; // À remplacer
 }
 
 AbsDirectoryComponent& Directory::addDirectoryComponent(const AbsDirectoryComponent& member)
@@ -27,8 +28,9 @@ AbsDirectoryComponent& Directory::addDirectoryComponent(const AbsDirectoryCompon
 	// À compléter pour construire par clonage une copie de l'objet reçu en paramètre
 	// et l'insérer dans le conteneur de documents. On retourne une référence à l'objet
 	// qui vient d'être inséré dans le conteneur.
-
-	return *this; // À remplacer 
+	DirectoryComponentPtr directoryComponentPtr = std::make_unique<AbsDirectoryComponent>(member.clone());
+	m_documents.push_back(directoryComponentPtr);
+	return *directoryComponentPtr; // À remplacer 
 }
 
 DirectoryComponentIterator Directory::begin()
@@ -75,6 +77,7 @@ const AbsDocument* Directory::findDocument(std::string productName) const
 std::ostream& Directory::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une catégorie et son contenu
+	o << "Directory: " << m_name << std::endl;
 	return o;
 }
 
