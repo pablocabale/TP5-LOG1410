@@ -16,12 +16,16 @@ Instance::Instance(const Instance& mdd)
 	: AbsInstanceComponent(mdd.getName())
 {
 	// À compléter pour copier toutes les instances de niveau inférieur contenues dans l'instance}
+	for (auto it = mdd.cbegin(); it != mdd.cend(); ++it) {
+		addInstanceComponent(*it);
+	}
 }
 
 Instance* Instance::clone() const
 {
 	// À compléter pour construire un nouvel objet Instance en appelant le constructeur de copie
-	return nullptr; // À remplacer
+	Instance* clone = new Instance(*this);
+	return clone; // À remplacer
 }
 
 
@@ -52,8 +56,8 @@ AbsInstanceComponent& Instance::addInstanceComponent(const AbsInstanceComponent&
 	// À compléter pour construire par clonage une copie de l'objet reçu en paramètre
 	// et l'insérer dans le conteneur des instances. On retourne une référence à l'objet
 	// qui vient d'être inséré dans le conteneur.
-
-	return *this; // À remplacer 
+	m_instanceContainer.push_back(InstanceComponentPtr(member.clone()));
+	return *m_instanceContainer.back(); // À remplacer 
 }
 
 void Instance::deleteInstanceComponent(InstanceComponentIterator_const child)
@@ -69,6 +73,14 @@ void Instance::deleteAllComponents(void)
 std::ostream& Instance::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une instance et ses éléments
+	o << getName() << std::endl;
+	m_indent += 1;
+	for (auto it = cbegin(); it != cend(); it++) {
+		indent(o);
+		o << it - cbegin() + 1 << " " << *it << std::endl;
+	}
+	m_indent = 1;
+
 	return o;
 }
 

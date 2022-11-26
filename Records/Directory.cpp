@@ -14,8 +14,10 @@ Directory::Directory(const Directory& mdd)
 	: AbsDirectoryComponent(mdd.m_name)
 {
 	// À compléter pour copier tous les éléments contenus dans le répertoire
+	for (auto it = mdd.cbegin(); it != mdd.cend(); ++it) {
+		addDirectoryComponent(*it);
+	}
 }
-
 Directory* Directory::clone(void) const
 {
 	// À compléter pour construire un nouvel objet Directory en appelant le constructeur de copie
@@ -77,6 +79,14 @@ std::ostream& Directory::printToStream(std::ostream& o) const
 {
 	// À compléter pour imprimer sur un stream une catégorie et son contenu
 	o << "Directory: " << m_name << std::endl;
+	m_indent += 1;
+	for (auto it = cbegin(); it != cend(); it++) {
+		indent(o);
+		o << *it << std::endl;
+	}
+	m_indent = 1;
+		
+
 	return o;
 }
 
